@@ -170,16 +170,25 @@ Mengadopsi pedoman desain modern macOS (Vibrant Acrylic Glass, SF Symbols 6, Nat
   * Tombol *Clear History* dan *Export Audit Logs (JSON/CSV)*.
 
 #### Panel 3: Settings & API Management
-* **Server Controls**:
-  * Status toggle (Start / Stop / Restart Server).
-  * Port number selector dengan validasi port collision.
-  * Binding interface selector (`127.0.0.1` untuk isolasi aman, atau `0.0.0.0` untuk local LAN access).
+* **Service Lifecycle Controls**:
+  * Indikator status live (`HTTP Service Active: http://127.0.0.1:2727` vs `HTTP Service Stopped`).
+  * Tombol interaktif:
+    * **▶ Start Service**: Memulai listener server jika sedang berhenti.
+    * **⏹ Stop Service**: Menghentikan server agar tidak menerima koneksi luar.
+    * **⟳ Restart Service**: Melakukan restart listener server secara instan.
+  * Selector port custom (default: `2727`) dengan tombol *Apply*.
+* **System & Startup Preferences**:
+  * **Start at Login**: Toggle aktivasi peluncuran otomatis saat login ke macOS via modern `SMAppService` API.
+  * **Automatic Updates**:
+    * Toggle pemeriksaan rilis otomatis harian via GitHub Releases API.
+    * Selector channel rilis: *Stable Releases (Recommended)* dan *Pre-release / Beta*.
+    * Tombol *Check Now* untuk pengecekan versi instan.
 * **API Key Manager**:
   * Pembuatan multiple API keys dengan label (misal: "Cursor Mac", "Claude Code CLI", "Test Key").
-  * Masked display (`afm-xxxx...xxxx`) dengan tombol One-Click Copy.
+  * Masked display (`afm-xxxx...xxxx`) dengan tombol One-Click Copy dan Rotate Key.
   * Kemampuan menonaktifkan (*revoke*) atau menghapus key kapan saja.
 * **Model Aliasing Configurator**:
-  * Tabel mapping alias (e.g., input: `gpt-4o` -> target: `afm-vision`).
+  * Tabel mapping alias (e.g., input: `gpt-4o` -> target: `afm-vision`, `claude-3-5-sonnet` -> target: `afm-thinking`).
 
 #### Panel 4: About, Developer Profile, Changelog & Release Updates
 * **Language Switcher**:
