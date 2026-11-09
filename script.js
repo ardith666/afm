@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Translations Dictionary (EN Default / ID)
   const translations = {
     en: {
-      announcement: "AFM v1.1.0 is live! Native Metal GPU reasoning, dynamic chat streaming, and pruning controls.",
+      announcement: "100% Native Apple Foundation Model on Apple Silicon Neural Engine. Port 2727.",
       viewChangelog: "View Changelog ➔",
       navFeatures: "Features",
       navPlayground: "Playground",
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navAbout: "About",
       heroTitle: 'Turn Built-in macOS 27 LLMs into an <span class="highlight-cyan">OpenAI-Compatible</span> Engine.',
       heroDesc: "Stop paying cloud API bills for coding agents. AFM bridges on-device Apple Foundation Models into a blazing-fast HTTP REST & SSE server on port <strong>2727</strong>. Drop straight into Cursor, Claude Code, Cline, or Python.",
-      btnDownloadDmg: "Download DMG (Universal)",
+      btnDownloadDmg: "Download Latest DMG",
       btnTryPlayground: "🕹️ Live Playground",
       copyText: "COPY",
       copiedText: "COPIED!",
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       devBio: "Lecturer and Web Developer passionate about technology, software development, and digital innovation."
     },
     id: {
-      announcement: "AFM v1.1.0 telah rilis! Akselerasi Metal GPU, streaming chat dinamis, dan pengelolaan riwayat.",
+      announcement: "100% Native Apple Foundation Model di Apple Silicon Neural Engine. Port 2727.",
       viewChangelog: "Lihat Changelog ➔",
       navFeatures: "Fitur",
       navPlayground: "Playground",
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navAbout: "Tentang",
       heroTitle: 'Ubah LLM Bawaan macOS 27 Menjadi Engine <span class="highlight-cyan">OpenAI-Compatible</span>.',
       heroDesc: "Hemat tagihan cloud API untuk coding agent Anda. AFM menjembatani Apple Foundation Model on-device menjadi server HTTP REST & SSE berkecepatan tinggi di port <strong>2727</strong>. Langsung gunakan di Cursor, Claude Code, Cline, atau Python.",
-      btnDownloadDmg: "Unduh DMG (Universal)",
+      btnDownloadDmg: "Unduh DMG Terbaru",
       btnTryPlayground: "🕹️ Coba Playground",
       copyText: "SALIN",
       copiedText: "TERSALIN!",
@@ -218,7 +218,7 @@ end
   }
 
   function escapeHtml(str) {
-    return str
+    return (str || "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -251,22 +251,119 @@ end
     navLinks.classList.toggle("open");
   });
 
-  // 5. GitHub Release Checker Live Button
+  // 5. Automated GitHub Releases Synchronizer
+  // Automatically discovers and populates the latest release, direct DMG download links,
+  // badges, and the changelog list without manual hardcoding!
+  async function syncGitHubReleases() {
+    const changelogList = document.getElementById("changelogList");
+    const heroDownloadBtn = document.getElementById("heroDownloadBtn");
+    const heroDownloadLabel = document.getElementById("heroDownloadLabel");
+    const dmgDownloadLink = document.getElementById("dmgDownloadLink");
+    const dmgDownloadLabel = document.getElementById("dmgDownloadLabel");
+    const dmgMockupTitle = document.getElementById("dmgMockupTitle");
+    const announcementBadge = document.getElementById("announcementBadge");
+    const checkUpdateBtn = document.getElementById("checkUpdateBtn");
+
+    try {
+      const res = await fetch("https://api.github.com/repos/ardith666/afm/releases");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const releases = await res.json();
+      if (!Array.isArray(releases) || releases.length === 0) return;
+
+      const latest = releases[0];
+      const latestTag = latest.tag_name || "Latest";
+      const dmgAsset = (latest.assets || []).find(a => a.name && a.name.endsWith(".dmg"));
+      const directDownloadUrl = dmgAsset
+        ? dmgAsset.browser_download_url
+        : `https://github.com/ardith666/afm/releases/tag/${latestTag}`;
+
+      // Dynamically update download buttons and labels
+      if (heroDownloadBtn) heroDownloadBtn.href = directDownloadUrl;
+      if (dmgDownloadLink) dmgDownloadLink.href = directDownloadUrl;
+      if (heroDownloadLabel) heroDownloadLabel.textContent = `Download DMG (${latestTag})`;
+      if (dmgDownloadLabel) dmgDownloadLabel.textContent = `Download ${dmgAsset ? dmgAsset.name : 'Latest DMG'} ➔`;
+      if (dmgMockupTitle && dmgAsset) dmgMockupTitle.textContent = dmgAsset.name;
+      if (announcementBadge) announcementBadge.textContent = latestTag;
+
+      // Render Changelog automatically from release notes
+      if (changelogList) {
+        changelogList.innerHTML = "";
+        releases.forEach((rel, index) => {
+          const item = document.createElement("div");
+          item.className = "release-item";
+          if (index > 0) {
+            item.style.opacity = "0.78";
+            item.style.marginTop = "20px";
+          }
+
+          const pubDate = rel.published_at
+            ? new Date(rel.published_at).toLocaleDateString("en-US", { month: "short", year: "numeric", day: "numeric" })
+            : "Recent";
+          const isLatest = index === 0;
+
+          // Extract bullet points from markdown release body
+          const rawLines = (rel.body || "").split("\n");
+          const bullets = [];
+          for (const line of rawLines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith("- ") || trimmed.startsWith("* ") || trimmed.startsWith("• ")) {
+              bullets.push(trimmed.replace(/^[-*•]\s+/, ""));
+            }
+          }
+
+          let listContent = "";
+          if (bullets.length > 0) {
+            listContent = `<ul class="release-list">${bullets.slice(0, 6).map(b => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`;
+          } else {
+            const shortDesc = rel.name || `Release ${rel.tag_name}`;
+            listContent = `<p style="font-size:0.92rem; color:var(--text-secondary); margin-top:6px;">${escapeHtml(shortDesc)}</p>`;
+          }
+
+          item.innerHTML = `
+            <div class="release-meta">
+              <span class="release-ver">${escapeHtml(rel.tag_name || "")}</span>
+              <span class="release-date">${pubDate}</span>
+              ${isLatest ? '<span class="badge badge-yellow">LATEST</span>' : ''}
+            </div>
+            ${listContent}
+          `;
+          changelogList.appendChild(item);
+        });
+      }
+
+      if (checkUpdateBtn) {
+        checkUpdateBtn.textContent = "Synced ✓";
+        setTimeout(() => { checkUpdateBtn.textContent = "Refresh ⟳"; }, 3000);
+      }
+    } catch (err) {
+      console.warn("Could not sync GitHub releases dynamically:", err);
+      // Fallback display if offline or API rate-limited
+      if (changelogList && changelogList.children.length === 0) {
+        changelogList.innerHTML = `
+          <div class="release-item">
+            <div class="release-meta">
+              <span class="release-ver">Latest Release</span>
+              <span class="badge badge-yellow">LATEST</span>
+            </div>
+            <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 6px;">
+              View all release notes and binary assets directly on 
+              <a href="https://github.com/ardith666/afm/releases/latest" target="_blank" rel="noopener" style="color:var(--text-primary); font-weight:700;">GitHub Releases ➔</a>
+            </p>
+          </div>
+        `;
+      }
+      if (checkUpdateBtn) checkUpdateBtn.textContent = "Refresh ⟳";
+    }
+  }
+
+  // Automatically execute on load
+  syncGitHubReleases();
+
   const checkUpdateBtn = document.getElementById("checkUpdateBtn");
-  checkUpdateBtn.addEventListener("click", () => {
-    checkUpdateBtn.textContent = "Checking GitHub...";
-    fetch("https://api.github.com/repos/ardith666/afm/releases/latest")
-      .then(res => {
-        if (!res.ok) throw new Error("Release not found");
-        return res.json();
-      })
-      .then(data => {
-        alert(`Latest Release: ${data.tag_name || "v1.0.0"}\nPublished: ${data.published_at || "Recent"}\nStatus: Up to date!`);
-        checkUpdateBtn.textContent = "Up to Date ✓";
-      })
-      .catch(() => {
-        alert("AFM v1.0.0 is the latest stable release.\nRun 'brew upgrade afm' to stay updated.");
-        checkUpdateBtn.textContent = "Up to Date ✓";
-      });
-  });
+  if (checkUpdateBtn) {
+    checkUpdateBtn.addEventListener("click", () => {
+      checkUpdateBtn.textContent = "Syncing...";
+      syncGitHubReleases();
+    });
+  }
 });

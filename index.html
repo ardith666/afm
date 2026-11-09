@@ -60,8 +60,8 @@
   <!-- Top Announcement Bar -->
   <div class="announcement-bar">
     <div class="announcement-content">
-      <span class="badge badge-yellow">NEW</span>
-      <span class="announcement-text" data-i18n="announcement">AFM v1.1.0 is live! Native Metal GPU reasoning, dynamic chat streaming, and pruning controls.</span>
+      <span class="badge badge-yellow" id="announcementBadge">NATIVE AI</span>
+      <span class="announcement-text" id="announcementText" data-i18n="announcement">100% Native Apple Foundation Model on Apple Silicon Neural Engine. Port 2727.</span>
       <a href="#changelog" class="announcement-link" data-i18n="viewChangelog">View Changelog ➔</a>
     </div>
   </div>
@@ -120,9 +120,9 @@
 
       <!-- CTA Buttons & Command Box -->
       <div class="hero-actions">
-        <a href="#install" class="neo-btn neo-btn-lg neo-btn-yellow" data-i18n="btnDownloadDmg">
+        <a id="heroDownloadBtn" href="https://github.com/ardith666/afm/releases/latest" class="neo-btn neo-btn-lg neo-btn-yellow">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Download DMG (Universal)
+          <span id="heroDownloadLabel" data-i18n="btnDownloadDmg">Download Latest DMG</span>
         </a>
         <a href="#playground" class="neo-btn neo-btn-lg neo-btn-white" data-i18n="btnTryPlayground">
           🕹️ Live Playground
@@ -437,8 +437,8 @@ res = client.chat.completions.create(
                 <div>
                   <strong>Standalone DMG Release</strong>
                   <p>Download the notarized disk image and drag to <code>/Applications</code>.</p>
-                  <a href="https://github.com/ardith666/afm/releases/latest" target="_blank" rel="noopener" class="neo-btn neo-btn-md neo-btn-yellow" style="margin-top: 8px;">
-                    Download AFM-1.1.0-arm64.dmg ➔
+                  <a id="dmgDownloadLink" href="https://github.com/ardith666/afm/releases/latest" target="_blank" rel="noopener" class="neo-btn neo-btn-md neo-btn-yellow" style="margin-top: 8px;">
+                    <span id="dmgDownloadLabel">Download Latest DMG ➔</span>
                   </a>
                 </div>
               </div>
@@ -454,7 +454,7 @@ res = client.chat.completions.create(
                   <span class="tl tl-yellow"></span>
                   <span class="tl tl-green"></span>
                 </div>
-                <span>AFM-1.1.0-arm64.dmg</span>
+                <span id="dmgMockupTitle">AFM-arm64.dmg</span>
               </div>
               <img src="assets/dmg/background.png" alt="DMG Drag and Drop Preview" class="dmg-img">
             </div>
@@ -484,45 +484,31 @@ res = client.chat.completions.create(
           </div>
         </div>
 
-        <!-- In-App Changelog Card -->
+        <!-- In-App Changelog Card (Dynamically Synced with GitHub Releases) -->
         <div class="changelog-card neo-card" id="changelog">
           <div class="changelog-header">
-            <span class="badge badge-purple">CHANGELOG</span>
-            <button id="checkUpdateBtn" class="neo-btn neo-btn-sm neo-btn-white">Check GitHub Release ⟳</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-purple">CHANGELOG</span>
+              <span class="badge badge-cyan" id="liveSyncBadge">AUTO-SYNCED</span>
+            </div>
+            <button id="checkUpdateBtn" class="neo-btn neo-btn-sm neo-btn-white">Refresh ⟳</button>
           </div>
-          <div class="changelog-body">
+          <div class="changelog-body" id="changelogList">
+            <!-- Loading placeholder, auto-populated by script.js -->
             <div class="release-item">
               <div class="release-meta">
-                <span class="release-ver">v1.1.0</span>
-                <span class="release-date">November 2026</span>
-                <span class="badge badge-yellow">LATEST</span>
+                <span class="release-ver">Loading...</span>
+                <span class="release-date">Fetching latest releases from GitHub</span>
               </div>
               <ul class="release-list">
-                <li>⚡ Live on-device Metal GPU neural engine bridge with real-time SSE token streaming.</li>
-                <li>💬 Chat history management: clear current messages, delete individual session, &amp; clear all history.</li>
-                <li>✨ Single-line compact auto-expanding input bar (22px baseline) matching Kier aesthetic.</li>
-                <li>🌐 Dynamic context-aware responses with intelligent local fallback.</li>
-                <li>📚 Integrated structured dev-methodology knowledge base.</li>
-              </ul>
-            </div>
-            <div class="release-item" style="opacity: 0.7; margin-top: 16px;">
-              <div class="release-meta">
-                <span class="release-ver">v1.0.0</span>
-                <span class="release-date">November 2026</span>
-              </div>
-              <ul class="release-list">
-                <li>✨ Initial launch of AFM on port <strong>2727</strong>.</li>
-                <li>🧠 Support for <code>afm-text</code>, <code>afm-thinking</code> (CoT), and <code>afm-vision</code> multimodal models.</li>
-                <li>⚡ OpenAI-compatible HTTP REST &amp; Server-Sent Events (SSE) streaming engine.</li>
-                <li>📊 Built-in Observability Dashboard with latency, TTFT, and TPS telemetry.</li>
-              </ul>
-            </div>
-                <li>🍺 Homebrew Tap distribution (<code>brew tap ardith666/afm</code>).</li>
+                <li>Syncing releases via GitHub REST API...</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
     </div>
   </section>
 
