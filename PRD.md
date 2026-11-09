@@ -138,17 +138,20 @@ graph TD
 
 Mengadopsi pedoman desain modern macOS (Vibrant Acrylic Glass, SF Symbols 6, Native NavigationSplitView, Menu Bar integration, Dark & Light Mode otomatis).
 
-#### Panel 1: Chat Studio & History
-* **Sidebar Sesi**:
-  * Daftar obrolan tersimpan dikelompokkan berdasarkan tanggal (*Today, Yesterday, Previous 7 Days*).
-  * Tombol *New Chat* (`Cmd + N`), tombol pin obrolan penting, dan pencarian riwayat obrolan (*Full-Text Search* lokal).
-  * Ekspor percakapan ke format Markdown atau JSON.
+#### Panel 1: Chat Studio & History (AI Chat Standard)
+* **Sidebar Riwayat Obrolan (*Chat History Sidebar*)**:
+  * Desain 2-kolom responsif bergaya AI Chat modern (ChatGPT / Claude / Cursor).
+  * Tombol **+ New Chat** (`Cmd + N`) di bagian atas untuk memulai sesi baru secara cepat.
+  * Kotak pencarian riwayat obrolan (*Search history*) untuk memfilter obrolan lama.
+  * Daftar sesi interaktif dengan badge model (`Fast`, `Reasoning`, `Vision`) dan waktu pembuatan.
+  * Tombol hapus sesi (*Trash icon*) pada setiap obrolan.
+  * *Auto-naming*: Judul obrolan secara otomatis diperbarui dari ringkasan prompt pertama yang dikirimkan pengguna.
+  * Tombol *Toggle Sidebar* (`sidebar.left`) di header untuk menyembunyikan atau menampilkan riwayat kapan saja.
 * **Main Chat View**:
   * Dropdown pemilihan model (`afm-text`, `afm-thinking`, `afm-vision`).
-  * Rendering Markdown responsif dengan code block syntax highlighting, tombol *Copy Code*, dan LaTeX rendering.
-  * **Thinking Box Component**: Obrolan reasoning model menampilkan kartu collapsible *"Thinking Process (x seconds)"* yang dapat diperluas untuk melihat alur logika internal sebelum jawaban final.
-  * **Vision Input**: Area input mendukung *Drag & Drop* gambar, paste gambar dari clipboard (`Cmd + V`), dan preview thumbnail dengan tombol hapus sebelum dikirim.
-  * **Streaming Visualizer**: Animasi kursor tikar halus saat token di-stream secara real-time.
+  * Rendering responsif dengan animasi streaming token.
+  * **Thinking Box Component**: Kartu collapsible *"Thinking Process (0.42s)"* yang dapat diperluas/ciutkan untuk melihat proses CoT model reasoning.
+  * **Vision Input**: Area lampiran gambar (*photo button* / open panel) dengan preview thumbnail sebelum dikirim.
 
 #### Panel 2: Observability Dashboard & Analytics
 * **Live Activity Feed**:
@@ -187,8 +190,11 @@ Mengadopsi pedoman desain modern macOS (Vibrant Acrylic Glass, SF Symbols 6, Nat
   * Pembuatan multiple API keys dengan label (misal: "Cursor Mac", "Claude Code CLI", "Test Key").
   * Masked display (`afm-xxxx...xxxx`) dengan tombol One-Click Copy dan Rotate Key.
   * Kemampuan menonaktifkan (*revoke*) atau menghapus key kapan saja.
-* **Model Aliasing Configurator**:
-  * Tabel mapping alias (e.g., input: `gpt-4o` -> target: `afm-vision`, `claude-3-5-sonnet` -> target: `afm-thinking`).
+* **Model Aliasing Configurator (Toggleable, Default OFF)**:
+  * **Toggle On/Off**: Default dalam status **OFF** (hanya nama model resmi `afm-text`, `afm-thinking`, `afm-vision` yang diterima).
+  * **Manajemen Manual**:
+    * Pengguna dapat mengaktifkan dan menambahkan pemetaan alias manual secara bebas (misal: input `gpt-4o` ➔ target `afm-vision`, `o3-mini` ➔ target `afm-thinking`).
+    * Setiap baris alias dilengkapi tombol hapus (*Delete/Trash*) untuk penghapusan manual yang fleksibel.
 
 #### Panel 4: About, Developer Profile, Changelog & Release Updates
 * **Language Switcher**:
