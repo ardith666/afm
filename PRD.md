@@ -190,13 +190,26 @@ Mengadopsi pedoman desain modern macOS (Vibrant Acrylic Glass, SF Symbols 6, Nat
   * Pembuatan multiple API keys dengan label (misal: "Cursor Mac", "Claude Code CLI", "Test Key").
   * Masked display (`afm-xxxx...xxxx`) dengan tombol One-Click Copy dan Rotate Key.
   * Kemampuan menonaktifkan (*revoke*) atau menghapus key kapan saja.
-* **Model Aliasing Configurator (Toggleable, Default OFF)**:
-  * **Toggle On/Off**: Default dalam status **OFF** (hanya nama model resmi `afm-text`, `afm-thinking`, `afm-vision` yang diterima).
-  * **Manajemen Manual**:
-    * Pengguna dapat mengaktifkan dan menambahkan pemetaan alias manual secara bebas (misal: input `gpt-4o` ➔ target `afm-vision`, `o3-mini` ➔ target `afm-thinking`).
-    * Setiap baris alias dilengkapi tombol hapus (*Delete/Trash*) untuk penghapusan manual yang fleksibel.
+* **Model Registry & Aliasing Configurator**:
+  * **Daftar Model Resmi (Selalu Ditampilkan)**:
+    * `afm-text`: Fast general instruction model (Apple Neural Engine).
+    * `afm-thinking`: Reasoning & Chain-of-Thought model.
+    * `afm-vision`: Multimodal visual model.
+  * **Toggle Aliasing (Default OFF)**:
+    * Saat OFF: Server hanya memproses nama model resmi internal.
+    * Daftar alias yang sudah dikonfigurasi **tetap ditampilkan** dalam status *Inactive* agar pengguna dapat meninjau pemetaan tanpa kehilangan konfigurasi.
+    * Saat ON: Form penambahan alias manual aktif dan pemetaan diterjemahkan secara dinamis.
 
-#### Panel 4: About, Developer Profile, Changelog & Release Updates
+#### Panel 4: Tutorial & Panduan Integrasi (Guides & Deployment)
+* **Quick Credentials Bar**: Menyajikan Base URL (`http://127.0.0.1:2727/v1`) dan API Key aktif dengan tombol *One-Click Copy*.
+* **Panduan Integrasi Step-by-Step Lengkap**:
+  1. **Cursor & Windsurf IDE**: Panduan pengisian *Override OpenAI Base URL*, API Key, dan pemilihan model `afm-thinking` / `afm-text`.
+  2. **Claude Code CLI & Cline**: Konfigurasi provider *OpenAI-Compatible* dan setting environment variables di terminal.
+  3. **Python & Node.js Developer SDK**: Contoh kode copy-paste lengkap menggunakan SDK resmi `openai` dengan streaming SSE.
+  4. **cURL Terminal Streaming Test**: Perintah terminal cepat untuk menguji inferensi lokal dalam 1 detik.
+  5. **Headless Daemon & Start at Login**: Panduan deployment background daemon dan instalasi via `brew tap ardith666/afm`.
+
+#### Panel 5: About, Developer Profile, Changelog & Release Updates
 * **Language Switcher**:
   * Opsi bahasa: **English (Default)** dan **Bahasa Indonesia**.
   * Switcher instan tanpa perlu restart aplikasi (reaktif via SwiftUI `@Environment(\.locale)`).
