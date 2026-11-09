@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Translations Dictionary (EN Default / ID)
   const translations = {
     en: {
-      announcement: "AFM v1.0.0 is live! Native macOS 27 style, Text, Thinking & Vision models supported.",
+      announcement: "AFM v1.1.0 is live! Native Metal GPU reasoning, dynamic chat streaming, and pruning controls.",
       viewChangelog: "View Changelog ➔",
       navFeatures: "Features",
       navPlayground: "Playground",
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       devBio: "Lecturer and Web Developer passionate about technology, software development, and digital innovation."
     },
     id: {
-      announcement: "AFM v1.0.0 telah rilis! Style native macOS 27, mendukung model Text, Thinking & Vision.",
+      announcement: "AFM v1.1.0 telah rilis! Akselerasi Metal GPU, streaming chat dinamis, dan pengelolaan riwayat.",
       viewChangelog: "Lihat Changelog ➔",
       navFeatures: "Fitur",
       navPlayground: "Playground",
